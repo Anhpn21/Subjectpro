@@ -1,0 +1,2 @@
+BN123,PHAM ANH,kho ngu,Binh lang(400g) - Mach nha(500g)
+BN787,NGOC ANH,kho tieu,Binh lang(300g) - Manh nha(400g) 
