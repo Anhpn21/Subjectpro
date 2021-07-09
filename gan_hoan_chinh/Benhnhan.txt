@@ -1,0 +1,2 @@
+BN123,PHAM ANH,nam,31032001,97678932,quang binh,kho ngu
+BN787,NGOC ANH,nu,31071999,987768832,ha noi,kho tieu
