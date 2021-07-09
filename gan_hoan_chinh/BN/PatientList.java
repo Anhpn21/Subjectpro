@@ -17,7 +17,6 @@ import java.util.logging.Logger;
 
 public class PatientList extends Vector<Patient> implements Function{
     Scanner sc = new Scanner(System.in);
-    List<Patient> listBN=new Vector<>();
     public PatientList() {
     }
     
@@ -42,7 +41,6 @@ public class PatientList extends Vector<Patient> implements Function{
                 
                 Patient bn = new Patient(ID, name, sex, birth, phone, address, diseaseName);
                 this.add(bn);
-                listBN.add(bn);
                 
             }
             bf.close();fr.close();
@@ -114,12 +112,7 @@ public class PatientList extends Vector<Patient> implements Function{
         }
         return -1;
     }
-    public int find12(String fId){
-        for(Patient x: listBN){
-            if(x.getID().equalsIgnoreCase(fId)) return listBN.indexOf(x);
-        }
-        return -1;
-    }
+    
 //String ID, String name, String sex, long birth, int phone, String address, String diseaseName
     @Override
     public void display() {
