@@ -21,7 +21,7 @@ import java.util.logging.Logger;
 
 public class DrugList extends Vector<Drug> implements Function {
     Scanner sc = new Scanner(System.in);
-    ArrayList listDon = new ArrayList();
+    ArrayList<String> listDon = new ArrayList<>();
     int index=0;
     public DrugList() {
     }
@@ -168,19 +168,22 @@ public class DrugList extends Vector<Drug> implements Function {
     public void AddFileDon(String fName) {
         
         try {
-            File f= new File(fName);
-            if(!f.exists()) return;
-            FileReader fr =  new FileReader(f);
-            BufferedReader bf = new BufferedReader(fr);
-            String detail;
-            while((detail=bf.readLine())!=null){
-                StringTokenizer stk=new StringTokenizer(detail,",");
-                String dId=stk.nextToken().toUpperCase();
-                String dName=stk.nextToken().toUpperCase();
-                String dDesease=stk.nextToken();
-                String dDrug=stk.nextToken().toUpperCase();
-                listDon.add(dId + "," +dName+ "," +dDesease+ "," +dDrug);
-                index++;
+            FileReader fr = new FileReader(f); 
+                BufferedReader bf = new BufferedReader(fr);
+                String s=null,detail;
+                while((detail=bf.readLine())!= null){
+                    StringTokenizer st=new StringTokenizer(detail, ",");
+                    if(st.hasMoreTokens()){
+                        //st=new StringTokenizer(detail, ",");
+                        String dId=st.nextToken().toUpperCase();
+                        String dName=st.nextToken().toUpperCase();
+                        String dDesease=st.nextToken();
+                        String dDrug=st.nextToken().toUpperCase();
+                        double dPrice=Double.parseDouble(st.nextToken());
+                        s = dId+","+dName+","+dDesease+","+dDrug+","+dPrice;
+                        listDon.add(index, s);
+                        index++;
+                    }
             }
             bf.close();fr.close();
         } catch (FileNotFoundException ex) {
@@ -200,8 +203,10 @@ public class DrugList extends Vector<Drug> implements Function {
             FileWriter fw = new FileWriter(f);
             PrintWriter pw = new PrintWriter(fw);
             for(int i=0; i<listDon.size();i++){
-                pw.print(listDon.get(i)+"\n");
+                pw.println(listDon.get(i));
+                
             }
+            System.out.println("save success");
             pw.close();fw.close();
         } catch (IOException ex) {
             Logger.getLogger(DrugList.class.getName()).log(Level.SEVERE, null, ex);
@@ -215,6 +220,7 @@ public class DrugList extends Vector<Drug> implements Function {
         System.out.println("**Do not enter ==> stop");
         String adrug,fDrug="";
         double aWei,oWei;
+        double fPrice=0;
         boolean dem=true;
         while(dem){
             System.out.print("\tDrug: ");
@@ -235,10 +241,12 @@ public class DrugList extends Vector<Drug> implements Function {
                     this.get(tmp).setWeight(oWei-aWei);
                 }else System.out.println("kho không đủ");
             }
+            fPrice += (aWei*(this.get(tmp).getPrice()));
             fDrug+=adrug+"("+aWei+")" + " - "; 
         }
         fDrug=fDrug.substring(0, fDrug.length()-3);
-        listDon.add(index, aId + "," + aName+"," + aDes+","+fDrug);
+        String s=aId + "," + aName+"," + aDes+","+fDrug+","+fPrice;
+        listDon.add(index, s);
         index++;
         //list.add(dId + "," +dName+ "," +dDesease+ "," +dDrug);
         System.out.println("New Đơn thuốc has been added");
@@ -250,15 +258,21 @@ public class DrugList extends Vector<Drug> implements Function {
             System.out.println("file rỗng");
             return;
         }
+        String sz="";
+        String format="%-8s%-25s%-20s%-60s%s";
         System.out.println("----------------------");
-        System.out.println("ID\tName\t\tMắc Bệnh\tĐơn thuốc");
-        for(int i=0;i<listDon.size();i++){
-            StringTokenizer stk=new StringTokenizer((String) listDon.get(i), ",");
-            String dsID=stk.nextToken().toUpperCase();
-            String dsName=stk.nextToken().toUpperCase();
-            String dsDesease=stk.nextToken();
-            String donThuoc=stk.nextToken();
-            System.out.println(dsID+"\t" + dsName+"\t"+dsDesease+"\t"+donThuoc);
-        }
+        System.out.printf(format,"ID","Name","Mắc Bệnh","Đơn thuốc","Tổng giá");
+        System.out.println("");
+        for(String x: listDon){
+            String arr[]=x.split(",");
+            
+            String dsID=arr[0];
+            String dsName=arr[1];
+            String dsDesease=arr[2];
+            String donThuoc=arr[3];
+            String dsPrice=arr[4];
+            
+            System.out.printf(format,dsID,dsName,dsDesease,donThuoc,dsPrice);
+            System.out.println("");
     }
 }
